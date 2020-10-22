@@ -1,0 +1,480 @@
+openapi: "3.0.0"
+info:
+  title: Scheduler API
+  version: 3.0.0
+paths:
+  /api/users:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              examples:
+                'multiple users found':
+                  value:
+                    [
+                      {
+                        "id": 1,
+                        "user_id": "1",
+                        "name": "Grubb Buckets",
+                        "workDayStart": 9,
+                        "workDayEnd": 17,
+                        "workWeekStart": 1,
+                        "workWeekEnd": 4,
+                        "time_zone": "America/Chicago",
+                        "active": 1,
+                        "created": "2020-10-18T02:17:45.000Z",
+                        "updated": null,
+                        "working_hours": "16:00-1:00",
+                        "events": [
+                          "e7997274-514b-4265-8336-961192ca76de"
+                        ]
+                      },
+                      {
+                        "id": 2,
+                        "user_id": "2",
+                        "name": "Fril Gumbo",
+                        "workDayStart": 9,
+                        "workDayEnd": 17,
+                        "workWeekStart": 1,
+                        "workWeekEnd": 4,
+                        "time_zone": "America/Los_Angeles",
+                        "active": 1,
+                        "created": "2020-10-16T05:32:12.000Z",
+                        "updated": "2020-10-18T02:17:45.000Z",
+                        "working_hours": "16:00-1:00",
+                        "events": [
+                          "81c93f72-fea0-4332-a39f-05b208fae98b",
+                          "abc16577-ab38-4c4f-87dc-5e0633391485"
+                        ]
+                      }
+                    ]
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              'new user':
+                value:
+                  {
+                    "name": "Some New User",
+                    "workDayStart": 16,
+                    "workDayEnd": 0,
+                    "workWeekStart": 1,
+                    "workWeekEnd": 5,
+                    "time_zone": "America/Boston",
+                    "active": 1
+                }
+      responses:
+        '201':
+          $ref: '#/components/responses/201UserCreated'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  /api/users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    get:
+      summary: Get a specific user resource by id
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              examples:
+                'user found':
+                  value:
+                    [
+                      {
+                        "id": 1,
+                        "user_id": "1",
+                        "name": "Grubb Buckets",
+                        "workDayStart": 9,
+                        "workDayEnd": 17,
+                        "workWeekStart": 1,
+                        "workWeekEnd": 4,
+                        "time_zone": "America/Chicago",
+                        "active": 1,
+                        "created": "2020-10-18T02:17:45.000Z",
+                        "updated": null,
+                        "working_hours": "16:00-1:00",
+                        "events": [
+                          "81c93f72-fea0-4332-a39f-05b208fae98b",
+                          "abc16577-ab38-4c4f-87dc-5e0633391485"
+                        ]
+                      }
+                    ]
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    put:
+      summary: Update a specific user resource by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              'change user name':
+                value:
+                  {
+                    "name": "New User Name"
+                  }
+              'change user time zone':
+                value:
+                  {
+                    "time_zone": "America/New_York"
+                  }
+              'change multiple user properties':
+                value:
+                  {
+                    "time_zone": "Europe/Paris",
+                    "name": "New User Name"
+                  }
+      responses:
+        '204':
+          $ref: '#/components/responses/204NoContent'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    delete:
+      summary: Delete a specific user resource by id
+      responses:
+        '204':
+          $ref: '#/components/responses/204NoContent'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  /api/users/{id}/events:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+      - $ref: '#/components/parameters/rangeStartParam'
+      - $ref: '#/components/parameters/rangeEndParam'
+    get:
+      summary: Get all events in a given time range for a user with a particular id
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeRange'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  /api/events:
+    get:
+      summary: Get all events in a given time range
+      parameters:
+        - $ref: '#/components/parameters/rangeStartParam'
+        - $ref: '#/components/parameters/rangeEndParam'
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeRange'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    post:
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeRange'
+            examples:
+              'new event with two users attending':
+                value:
+                  {
+                    "start": "2020-10-27 20:05",
+                    "end": "2020-10-27 22:05",
+                    "title": "getting hole drilled in head",
+                    "users": ["1", "2"]
+                  }
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeRange'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  /api/events/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    get:
+      summary: Get a specific event resource by id
+      responses:
+        '200':
+          description: |-
+            200 OK Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeRange'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    put:
+      summary: Update a specific event resource by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeRange'
+            examples:
+              'change event name and start time':
+                value:
+                  {
+                    "title": "New User Name",
+                    "start": "2020-10-25T10:10:00Z"
+                  }
+      responses:
+        '204':
+          $ref: '#/components/responses/204NoContent'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+    delete:
+      summary: Delete a specific event resource by id
+      responses:
+        '204':
+          $ref: '#/components/responses/204NoContent'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+  /api/schedule:
+    get:
+      summary: Get availability (free blocks and busy blocks) for users
+      parameters:
+        - $ref: '#/components/parameters/idQueryParam'
+        - $ref: '#/components/parameters/rangeStartParam'
+        - $ref: '#/components/parameters/rangeEndParam'
+        - $ref: '#/components/parameters/timeZoneQueryParam'
+        - $ref: '#/components/parameters/workScheduleParam'
+      responses:
+        '200':
+          description: |-
+            200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeRange'
+              examples:
+                'multiple ranges found':
+                  value:
+                    [
+                      {
+                        "start": "2020-10-18T16:00:00.000Z",
+                        "end": "2020-10-18T22:00:00.000Z",
+                        "startDate": "2020-10-18",
+                        "md5": "2a02cc1e44da1a8e65859273be394abe",
+                        "description": "2020-10-18T00:00:00Z to 2020-10-18T23:59:59Z",
+                        "title": "No Overlapping Work Schedules",
+                        "created": "2020-10-18T16:00:00.000Z",
+                        "updated": "2020-10-18T16:00:00.000Z"
+                      },
+                      {
+                        "start": "2020-10-19T16:00:00.000Z",
+                        "end": "2020-10-19T22:00:00.000Z",
+                        "startDate": "2020-10-19",
+                        "md5": "6870ba39c670436e8a514a1ee77976b1",
+                        "description": "2020-10-19T16:00:00Z to 2020-10-19T22:00:00Z",
+                        "title": "Free During Shared Workhours",
+                        "freeTime": true,
+                        "created": "2020-10-18T16:00:00.000Z",
+                        "updated": "2020-10-18T16:00:00.000Z"
+                      }
+                    ]
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+components:
+  parameters:
+    idParam:
+      name: id
+      in: path
+      description: ID of resource to get
+      required: true
+      schema:
+        type: string
+    idQueryParam:
+      name: id
+      in: query
+      description: ID of resource(s) to filter by
+      required: false
+      schema:
+        type: string
+    eventIdQueryParam:
+      name: event_id
+      in: query
+      description: Event ID to filter by
+      required: false
+      schema:
+        type: string
+    rangeStartParam:
+      name: start
+      in: query
+      description: ISO 8601 time start for range to filter by
+      required: false
+      schema:
+        type: string
+    rangeEndParam:
+      name: end
+      in: query
+      description: ISO 8601 time end for range to filter by
+      required: false
+      schema:
+        type: string
+    timeZoneQueryParam:
+      name: time_zone
+      in: query
+      description: Time zone of the originating request
+      required: false
+      schema:
+        type: string
+    workScheduleParam:
+      name: workSchedule
+      in: query
+      description: A flag representing whether or not to consider work hours when calculating availability
+      required: false
+      schema:
+        type: string
+  responses:
+    201Created:
+      description: The resource was created.
+      content:
+        text/plain:
+          examples:
+            'created':
+              value: 'Created'
+    201UserCreated:
+      description: The user was created.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+    204NoContent:
+      description: The request was processed but returned no content.
+    400BadRequest:
+      description: The request was malformed and could or would not be processed.
+      content:
+        text/plain:
+          examples:
+            'bad request':
+              value: 'Bad Request'
+    404NotFound:
+      description: The specified resource was not found.
+      content:
+        text/plain:
+          examples:
+            'no such resource':
+              value: 'Not Found'
+    500InternalServerError:
+      description: There was an internal server error.
+      content:
+        text/plain:
+          examples:
+            'error':
+              value: 'Internal Server Error'
+  schemas:
+    TimeRange:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+        startDate:
+          type: string
+        md5:
+          type: string
+        description:
+          type: string
+        title:
+          type: string
+        allDay:
+          type: boolean
+        freeTime:
+          type: boolean
+        busyTime:
+          type: boolean
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: string
+        name:
+          type: string
+        workDayStart:
+          type: integer
+        workDayEnd:
+          type: integer
+        workWeekStart:
+          type: integer
+        workWeekEnd:
+          type: integer
+        time_zone:
+          type: string
+        events:
+          type: array
+          items:
+            type: string
+        active:
+          type: integer
+        created:
+          type: string
+        updated:
+          type: string
+        working_hours:
+          type: string

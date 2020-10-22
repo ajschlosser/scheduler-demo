@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${SCHEDULER_DEMO_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${SCHEDULER_DEMO_MYSQL_DATABASE}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ./server/data:/docker-entrypoint-initdb.d   # DB schema and seed data
+  scheduler-app-server:
+    depends_on:
+      - db
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - SCHEDULER_DEMO_MYSQL_HOST=db
+      - SCHEDULER_DEMO_ENVIRONMENT=docker
+    ports:
+      - 3100:3100
+    expose:
+      - 3100
+volumes:
+    scheduler-app-mysql-volume:
