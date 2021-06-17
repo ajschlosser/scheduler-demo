@@ -18,7 +18,7 @@ const eventRoutes = require('./api/routes/event.routes');
 
 // Express app
 const app = express();
-app.use(express.static('../web/build'));
+app.use(express.static('../web/build'));  // Static Web server
 app.use(/\/((?!api).)*/, function (req, res) {
   res.sendFile('index.html', { root: path.join(__dirname, '../web/build/') });
 });

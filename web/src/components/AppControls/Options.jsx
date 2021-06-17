@@ -80,7 +80,7 @@ const ScheduleOptions = ({ workingHoursLabel, selectTimeZoneLabel, classes }) =>
                 .map(time_zone => <MenuItem key={time_zone} value={time_zone}>{time_zone.replace('_', ' ')}</MenuItem>)
             }
           </Select>
-          <FormHelperText>Schedules are viewed from this timezone's point of view</FormHelperText>
+          <FormHelperText>Schedules are viewed from this timezone&lsquo;s point of view</FormHelperText>
         </FormControl>
       </FormGroup>
     </Toolbar>

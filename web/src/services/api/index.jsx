@@ -34,7 +34,7 @@ const fetchUsers = async () => {
   }
 };
 
-const fetchUserEvents = async ({ user_id, start, end, options }) => {
+const fetchUserEvents = async ({ user_id, start, end }) => {
   try
   {
     let reqUrl = `${baseUrl}/users/${user_id}/events?start=${start}&end=${end}`;

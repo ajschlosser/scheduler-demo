@@ -55,6 +55,7 @@ function App() {
     dispatchLanguageData(obj);
   };
 
+
   // Fetch users on load
   useEffect(() => {
     fetchUsers().then(({ users }) => {
@@ -75,7 +76,8 @@ function App() {
           end: calendarOptions.range.end,
           options: {
             workSchedule: calendarOptions.workSchedule,
-            time_zone: queryString.parse(history && history.location.search).time_zone || calendarOptions.currenttime_zone
+            time_zone: queryString.parse(history && history.location.search).time_zone
+              || calendarOptions.currenttime_zone
           }
         }).then(updateData);
 
