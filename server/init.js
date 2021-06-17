@@ -35,7 +35,20 @@ const init = async function () {
         let hash = crypto.createHmac('sha512', salt);
         hash.update(password);
         await db.query(`INSERT INTO auth (user_id, username, password_hash, password_salt) VALUES ('${u.user_id}', '${username}', '${hash.digest('hex')}', '${salt}')`);
-        let fakeEvents = generateFakeEvents({ count: 2, dates: ['2020-10-10','2020-10-11','2020-10-12','2020-10-13','2020-10-14','2020-10-15','2020-10-16','2020-10-17','2020-10-18'], time_zone: u.time_zone});
+        let today = new Date().toISOString().split('T')[0];
+        let fakeEvents = generateFakeEvents(
+          {
+            count: 2,
+            dates: [
+              today,
+              dayjs(today).add(1, 'day').format('YYYY-MM-DD'),
+              dayjs(today).subtract(1, 'day').format('YYYY-MM-DD'),
+              dayjs(today).add(2, 'day').format('YYYY-MM-DD'),
+              dayjs(today).subtract(2, 'day').format('YYYY-MM-DD')
+            ],
+            time_zone: u.time_zone
+          }
+        );
         fakeEvents.forEach(async e => {
           try
           {
