@@ -12,7 +12,7 @@ const mapEvents = e => {
   };
 };
 
-createEvent = eventObj => {
+const createEvent = async eventObj => {
   return new Promise((resolve, reject) => {
     let q = `INSERT INTO event (event_id, title, description, md5, start, end, allDay, users, active) VALUES ('${eventObj.event_id}','${eventObj.title}','${eventObj.description}','${eventObj.md5}','${eventObj.start.format('YYYY-MM-DD HH:mm:ss')}','${eventObj.end.format('YYYY-MM-DD HH:mm:ss')}','${eventObj.allDay ? 1 : 0}', '${eventObj.users ? eventObj.users.join(',') : null}','${eventObj.active}')`;
     db.query(q)
@@ -23,7 +23,7 @@ createEvent = eventObj => {
   });
 };
 
-getEventById = event_id => {
+const getEventById = event_id => {
   return new Promise((resolve, reject) => {
     let q = `SELECT * FROM event WHERE event_id = '${event_id}'`;
     db.query(q)
@@ -32,7 +32,7 @@ getEventById = event_id => {
   });
 };
 
-getEventsInRange = (start, end) => {
+const getEventsInRange = (start, end) => {
   start = dayjs.utc(start).startOf('day').format('YYYY-MM-DD HH:mm:ss');
   end = dayjs.utc(end).endOf('day').format('YYYY-MM-DD HH:mm:ss');
   return new Promise((resolve, reject) => {
@@ -44,7 +44,7 @@ getEventsInRange = (start, end) => {
   });
 };
 
-updateEventById = (event_id, data) => {
+const updateEventById = (event_id, data) => {
   console.log('data',data);
   return new Promise((resolve, reject) => {
     let q = `UPDATE event `;
@@ -75,7 +75,7 @@ updateEventById = (event_id, data) => {
   });
 };
 
-deleteEventById = event_id => {
+const deleteEventById = event_id => {
   return new Promise((resolve, reject) => {
     let q = `DELETE FROM event WHERE event_id = '${event_id}'`;
     db.query(q)
@@ -94,7 +94,7 @@ deleteEventById = event_id => {
   });
 }
 
-getUserEvents = ({ id, range={}, orderBy='start' }) => {
+const getUserEvents = ({ id, range={}, orderBy='start' }) => {
   if (Array.isArray(id)) id = `'${id.join('\',\'')}'`;
   let { start, end } = range;
   let rangeClause = '';
@@ -112,7 +112,7 @@ getUserEvents = ({ id, range={}, orderBy='start' }) => {
   });
 };
 
-linkEventToUser = (event_id, user_id) => {
+const linkEventToUser = (event_id, user_id) => {
   return new Promise((resolve, reject) => {
     let q = `INSERT INTO event_user (user_id, event_id, start, end, md5_range) SELECT u.user_id, '${event_id}', start, end, md5 FROM event LEFT JOIN user u ON u.user_id = '${user_id}' WHERE event_id = '${event_id}' AND u.user_id IS NOT NULL`;
     db.query(q)
@@ -123,7 +123,7 @@ linkEventToUser = (event_id, user_id) => {
   });
 };
 
-unlinkEventFromUser = (event_id, user_id) => {
+const unlinkEventFromUser = (event_id, user_id) => {
   return new Promise((resolve, reject) => {
     let q = `DELETE FROM WHERE event_id = '${event_id}' AND user_id = '${user_id}'`;
     db.query(q)
@@ -134,7 +134,7 @@ unlinkEventFromUser = (event_id, user_id) => {
   });
 };
 
-deleteAllEventUsers = event_id => {
+const deleteAllEventUsers = event_id => {
   return new Promise((resolve, reject) => {
     let q = `DELETE FROM event_user WHERE event_id = '${event_id}'`;
     db.query(q)
@@ -145,7 +145,7 @@ deleteAllEventUsers = event_id => {
   });  
 }
 
-updateEventUsers = async (event_id, user_ids) => {
+const updateEventUsers = async (event_id, user_ids) => {
   return new Promise((resolve, reject) => {
     deleteAllEventUsers(event_id)
       .then(async r => {

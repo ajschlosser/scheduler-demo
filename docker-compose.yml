@@ -23,8 +23,8 @@ services:
       - SCHEDULER_DEMO_MYSQL_HOST=db
       - SCHEDULER_DEMO_ENVIRONMENT=docker
     ports:
-      - 3100:3100
+      - ${SCHEDULER_DEMO_EXPRESS_SERVER_PORT}:${SCHEDULER_DEMO_EXPRESS_SERVER_PORT}
     expose:
-      - 3100
+      - ${SCHEDULER_DEMO_EXPRESS_SERVER_PORT}
 volumes:
     scheduler-app-mysql-volume:

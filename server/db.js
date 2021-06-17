@@ -1,3 +1,4 @@
+const util = require('util');
 const mysql = require('mysql');
 
 let dbConfig = {
@@ -8,16 +9,19 @@ let dbConfig = {
 };
 
 const connection = mysql.createPool(dbConfig);
+const query = util.promisify(connection.query).bind(connection);
 
 module.exports = {
-  query: q => {
-    return new Promise((resolve, reject) => {
+  query: async q => {
       // Uncomment to log every MySQL query
-      console.log(`MySQL: "${q}"`);
-      connection.query(q, (e, r, f) => {
-        if (e) reject(e);
-        else resolve(r, f);
-      });
-    });
+      // console.log(`MySQL: "${q}"`);
+      try
+      {
+        return await query(q);
+      }
+      catch (err)
+      {
+        throw err;
+      }
   }
 };

@@ -59,7 +59,7 @@ function App() {
   useEffect(() => {
     fetchUsers().then(({ users }) => {
       updateData({ users });
-      updateOptions({ selectedUsers: users });
+      updateOptions({ selectedUsers: users || [] });
     });
   }, []);
 
