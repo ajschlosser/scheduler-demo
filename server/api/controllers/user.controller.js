@@ -20,7 +20,6 @@ const getUsers = async idStrOrArr => {
   try
   {
     let rows = await db.query(q);
-    console.log(rows);
     return rows.map(mapUsers);
   }
   catch (err)
@@ -54,7 +53,6 @@ const updateUserById = async (user_id, data) => {
   try
   {
     const userResult = await db.query(q)
-    console.log(userResult);
     if (userResult.affectedRows === 0)
       throw 404;
     else
@@ -70,8 +68,7 @@ const deleteUserById = async user_id => {
   let q = `DELETE FROM user WHERE user_id = '${user_id}'`;
   try
   {
-    const userResult = await db.query(q)
-    console.log(userResult);
+    const userResult = await db.query(q);
     if (userResult.affectedRows === 0)
       throw 404;
     else

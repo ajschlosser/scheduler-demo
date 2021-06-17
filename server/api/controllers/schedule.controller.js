@@ -213,6 +213,10 @@ const compareSchedules = async (users, start, end, pov_time_zone, workingHours=t
     {
       busyBlock.end = rangeEnd;
     }
+    else if (!workingHours)
+    {
+      busyBlock.end = currentEvent.end;
+    }
 
 
     if (busyBlock.start && busyBlock.end)
@@ -243,6 +247,14 @@ const compareSchedules = async (users, start, end, pov_time_zone, workingHours=t
 
   }
   debugLog(`Consolidated ${dedupedUserEvents.length} deduped user events into ${blocks.length} busy and free blocks`);
+
+  // if (!blocks.length)
+  // {
+  //   let allFree = new FreeTimeRange(rangeStart, rangeEnd, 'Free Block');
+  //   blocks.push(allFree);
+  //   return blocks;
+  // }
+
   const sortedBlocks = sortRangesBy(blocks, 'start');
 
   if (!workingHours)

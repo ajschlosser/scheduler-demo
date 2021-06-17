@@ -56,7 +56,7 @@ const getEventsInRange = async (start, end) => {
 };
 
 const updateEventById = async (event_id, data) => {
-  console.log('data',data);
+  //console.log('data',data);
   let q = `UPDATE event `;
   Object.keys(data).forEach((k, i, kArr) => {
     if (i === 0)

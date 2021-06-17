@@ -10,7 +10,7 @@ const { generateFakeUsers } = require('./api/models/user.model');
 const { generateFakeEvents } = require('./api/models/event.model');
 
 // Inititalizes everything for development purposes
-// * Drops existing database and creates new fresh one
+// * Drops existing database and creates new one
 // * Adds fake data (users, events, auth, etc.)
 // * Returns a promise
 const init = async function () {
@@ -38,7 +38,7 @@ const init = async function () {
         let today = new Date().toISOString().split('T')[0];
         let fakeEvents = generateFakeEvents(
           {
-            count: 2,
+            count: 1,
             dates: [
               today,
               dayjs(today).add(1, 'day').format('YYYY-MM-DD'),
