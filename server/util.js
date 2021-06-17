@@ -25,23 +25,25 @@ const uuid4 = () => {
 uuid4.valid = uuid => uuidPattern.test(uuid);
 
 const getResponseHandler = r => {
-  return new Promise((resolve, reject) => {
-    if (!r)
-    {
-     reject(500);
-    }
-    else if (!r.length)
-    {
-      reject(404);
-    }
-    resolve(r);
-  });
+  if (!r)
+  {
+    throw 500;
+  }
+  else if (!r.length)
+  {
+    throw 404;
+  }
+  return r;
 };
 
 
-const errorHandler = (err, req, res, next) => {
-  console.log('Error:', err);
+const catchHandler = err => {
+  console.log(err);
+  throw err;
+}
 
+const errorHandler = (err, req, res) => {
+  console.log('Error:', err);
   if (err.statusCode && Number.isInteger(err.StatusCode))
   {
     err = err.StatusCode;
@@ -85,7 +87,7 @@ const getEnvVarsFromFile = filePath => {
   if (fs.existsSync(fileLocation))
   {
     const lines = fs.readFileSync(fileLocation, 'utf8').split('\n');
-    for (l of lines)
+    for (let l of lines)
     {
       if (l[0] === '#' || !l.length) continue;
       const pair = l.split('=');
@@ -107,6 +109,7 @@ const getRandomArrItem = arr => arr[rand(0, arr.length)];
 
 module.exports = {
   dayjs,
+  catchHandler,
   errorHandler,
   getEnvVarsFromFile,
   getRandomArrItem,

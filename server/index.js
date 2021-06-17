@@ -37,11 +37,17 @@ app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use(errorHandler);
 
-// Init and listen
-init().then(() => {
-  return app.listen(port);
-}).then(() => {
-  console.log('express server listening on port', port,);
-}).catch(err => {
-  console.log(err);
-});
+// Init and run
+const run = async () => {
+  try
+  {
+    await init();
+    await app.listen(port);
+    console.log('express server listening on port', port,);
+  }
+  catch (err)
+  {
+    console.log(err);
+  }
+};
+run();

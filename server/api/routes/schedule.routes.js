@@ -9,20 +9,24 @@ const { compareSchedules } = require('../controllers/schedule.controller');
 // * Merges all overlapping event intervals into busy blocks
 // * Creates free blocks out of the remaining gaps
 // * If work hours are considered, adjusts accordingly per each user's work schedule
-scheduleRouter.get('/', (req, res, next) => {
+scheduleRouter.get('/', async (req, res, next) => {
   if (!req.query.start || !req.query.end || !req.query.id) return next(400);
-  getUsers(req.query.id)
-    .then(async users => {
-      let schedule = await compareSchedules(
-        users,
-        req.query.start,
-        req.query.end,
-        req.query.time_zone,
-        req.query.workSchedule === 'true' ? true : false
-      );
-      res.json(schedule);    
-    })
-    .catch(next);
+  try
+  {
+    const users = await getUsers(req.query.id);
+    let schedule = await compareSchedules(
+      users,
+      req.query.start,
+      req.query.end,
+      req.query.time_zone,
+      req.query.workSchedule === 'true' ? true : false
+    );
+    res.json(schedule);
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 module.exports = scheduleRouter;

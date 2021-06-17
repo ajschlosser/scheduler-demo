@@ -6,7 +6,8 @@ const {
   getUsers,
   getUserById,
   updateUserById,
-  deleteUserById
+  deleteUserById,
+  linkEventToUser
 } = require('../controllers/user.controller');
 const { getUserEvents } = require('../controllers/event.controller');
 const {
@@ -15,63 +16,94 @@ const {
 } = require('../../util');
 
 // Get all user resources
-userRouter.get('/', (req, res, next) => {
-  getUsers()
-    .then(getResponseHandler)
-    .then(r => res.json(r))
-    .catch(next);
+userRouter.get('/', async (req, res, next) => {
+  try
+  {
+    const r = await getUsers();
+    res.json(getResponseHandler(r));
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 // Create a new user resource
-userRouter.post('/', (req, res, next) => {
-  let newUser = new User({ ...req.body });
-  createUser(newUser)
-    .then(async r => {
-      if (req.body.users)
-      {
-        await req.body.users.forEach(async user_id => { await linkEventToUser(newEvent.event_id, user_id); });
-      }
-      res.status(201).json({ ...newUser, id: r.insertId });
-    })
-    .catch(next);
+userRouter.post('/', async (req, res, next) => {
+  try
+  {
+    let newUser = new User({ ...req.body });
+    const r = await createUser(newUser);
+    if (req.body.users)
+    {
+      await req.body.events.forEach(
+        async event_id =>
+          await linkEventToUser(event_id, newUser.user_id)
+      );
+    }
+    res.status(201).json({ ...newUser, id: r.insertId });
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 // Get a single user resource by id
-userRouter.get('/:id', (req, res, next) => {
-  getUserById(req.params.id)
-    .then(getResponseHandler)
-    .then(r => res.json(r))
-    .catch(next);
+userRouter.get('/:id', async (req, res, next) => {
+  try
+  {
+    const r = await getUserById(req.params.id);
+    res.json(getResponseHandler(r));
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 // Update a single user resource by id
-userRouter.put('/:id', (req, res, next) => {
-  updateUserById(req.params.id, req.body)
-    .then(r => {
-      res.sendStatus(204);
-    })
-    .catch(next);
+userRouter.put('/:id', async (req, res, next) => {
+  try
+  {
+    await updateUserById(req.params.id, req.body)
+    res.sendStatus(204);
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 // Delete a single user resource by id
-userRouter.delete('/:id', (req, res, next) => {
-  deleteUserById(req.params.id)
-    .then(r => {
-      res.sendStatus(204);
-    })
-    .catch(next);
+userRouter.delete('/:id', async (req, res, next) => {
+  try
+  {
+    await deleteUserById(req.params.id)
+    res.sendStatus(204);
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 // Get all event resources associated with a user id
-userRouter.get('/:id/events', (req, res, next) => {
-  console.log('here');
+userRouter.get('/:id/events', async (req, res, next) => {
   let { start, end } = req.query;
-  if (start) start = dayjs(start).startOf('day');
-  if (end) end = dayjs(end).endOf('day');
-  getUserEvents({ id: req.params.id, range: { start, end } })
-    .then(getResponseHandler)
-    .then(r => res.json(r))
-    .catch(next);
+  if (start)
+    start = dayjs(start).startOf('day');
+  if (end)
+    end = dayjs(end).endOf('day');
+  try
+  {
+    const r = await getUserEvents({ id: req.params.id, range: { start, end } })
+    res.json(getResponseHandler(r));
+  }
+  catch (err)
+  {
+    next(err);
+  }
 });
 
 module.exports = userRouter;

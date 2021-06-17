@@ -1,6 +1,8 @@
 const util = require('util');
 const mysql = require('mysql');
 
+const { catchHandler } = require('./util');
+
 let dbConfig = {
   host: process.env.SCHEDULER_DEMO_MYSQL_HOST || 'localhost',
   user: process.env.SCHEDULER_DEMO_MYSQL_USER,
@@ -21,7 +23,7 @@ module.exports = {
       }
       catch (err)
       {
-        throw err;
+        catchHandler(err);
       }
   }
 };

@@ -2,7 +2,10 @@ const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const path = require('path');
 const db = require(path.join(__dirname, './db'));
-const { dayjs } = require('./util');
+const {
+  dayjs,
+  catchHandler 
+} = require('./util');
 const { generateFakeUsers } = require('./api/models/user.model');
 const { generateFakeEvents } = require('./api/models/event.model');
 
@@ -41,23 +44,21 @@ const init = async function () {
           }
           catch (e)
           {
-            console.log(e);
-            reject(e);
+            catchHandler(e);
           }
         });
       }
       catch (err)
       {
         console.log(err);
-        reject(err);
+        throw err;
       }
     });
-    resolve();
   }
   catch (err)
   {
     console.log(err);
-    reject(err);
+    throw err;
   }
 };
 
