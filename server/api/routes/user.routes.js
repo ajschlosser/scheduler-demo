@@ -35,12 +35,12 @@ userRouter.post('/', async (req, res, next) => {
     let newUser = new User({ ...req.body });
     const r = await createUser(newUser);
     if (req.body.users)
-    {
+
       await req.body.events.forEach(
         async event_id =>
           await linkEventToUser(event_id, newUser.user_id)
       );
-    }
+
     res.status(201).json({ ...newUser, id: r.insertId });
   }
   catch (err)
@@ -66,7 +66,7 @@ userRouter.get('/:id', async (req, res, next) => {
 userRouter.put('/:id', async (req, res, next) => {
   try
   {
-    await updateUserById(req.params.id, req.body)
+    await updateUserById(req.params.id, req.body);
     res.sendStatus(204);
   }
   catch (err)
@@ -79,7 +79,7 @@ userRouter.put('/:id', async (req, res, next) => {
 userRouter.delete('/:id', async (req, res, next) => {
   try
   {
-    await deleteUserById(req.params.id)
+    await deleteUserById(req.params.id);
     res.sendStatus(204);
   }
   catch (err)
@@ -97,7 +97,7 @@ userRouter.get('/:id/events', async (req, res, next) => {
     end = dayjs(end).endOf('day');
   try
   {
-    const r = await getUserEvents({ id: req.params.id, range: { start, end } })
+    const r = await getUserEvents({ id: req.params.id, range: { start, end }});
     res.json(getResponseHandler(r));
   }
   catch (err)

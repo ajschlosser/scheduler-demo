@@ -7,13 +7,11 @@ const {
 
 const iso8601format = 'YYYY-MM-DD HH:mm:ss';
 
-const mapEvents = e => {
-  return {
-    ...e,
-    start: dayjs.utc(e.start),
-    end: dayjs.utc(e.end)
-  };
-};
+const mapEvents = e => ({
+  ...e,
+  start: dayjs.utc(e.start),
+  end: dayjs.utc(e.end)
+});
 
 const createEvent = async eventObj => {
   let q = `INSERT INTO event (event_id, title, description, md5, start, end, allDay, users, active) VALUES ('${eventObj.event_id}','${eventObj.title}','${eventObj.description}','${eventObj.md5}','${eventObj.start.format(iso8601format)}','${eventObj.end.format(iso8601format)}','${eventObj.allDay ? 1 : 0}', '${eventObj.users ? eventObj.users.join(',') : null}','${eventObj.active}')`;
@@ -57,15 +55,15 @@ const getEventsInRange = async (start, end) => {
 
 const updateEventById = async (event_id, data) => {
   //console.log('data',data);
-  let q = `UPDATE event `;
+  let q = 'UPDATE event ';
   Object.keys(data).forEach((k, i, kArr) => {
     if (i === 0)
-      q += `SET `;
+      q += 'SET ';
     q += `${k} = '${data[k]}'`;
-    if (i !== kArr.length-1)
-      q += `, `;
+    if (i !== kArr.length - 1)
+      q += ', ';
   });
-  q += ` WHERE event_id = '${event_id}'`
+  q += ` WHERE event_id = '${event_id}'`;
   try
   {
     const eventResult = await db.query(q);
@@ -96,9 +94,9 @@ const deleteEventById = async event_id => {
   {
     catchHandler(err);
   }
-}
+};
 
-const getUserEvents = async ({ id, range={}, orderBy='start' }) => {
+const getUserEvents = async ({ id, range = {}, orderBy = 'start' }) => {
   if (Array.isArray(id))
     id = `'${id.join('\',\'')}'`;
   let { start, end } = range;
@@ -149,14 +147,14 @@ const deleteAllEventUsers = async event_id => {
   {
     catchHandler(err);
   }
-}
+};
 
 const updateEventUsers = async (event_id, user_ids) => {
   try
   {
     const deleteResult = await deleteAllEventUsers(event_id);
     let agg = [deleteResult];
-    await user_ids.forEach(async user_id => agg.push(await linkEventToUser(event_id, user_id)) );
+    await user_ids.forEach(async user_id => agg.push(await linkEventToUser(event_id, user_id)));
     return agg;
   }
   catch (err)
@@ -175,4 +173,4 @@ module.exports = {
   createEvent,
   linkEventToUser,
   unlinkEventFromUser
-}
+};

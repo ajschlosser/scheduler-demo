@@ -33,7 +33,7 @@ const theme = createMuiTheme({
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(','),    
+    ].join(','),
   },
   overrides: {
     MuiAppBar: {
@@ -48,10 +48,10 @@ const theme = createMuiTheme({
 ReactDOM.render(
   // Material UI does not yet play nicely with React Strict
   // <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>,
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <App />
+  </ThemeProvider>,
   // </React.StrictMode>,
   document.getElementById('root')
 );

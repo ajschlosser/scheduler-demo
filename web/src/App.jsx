@@ -47,7 +47,7 @@ function App() {
   // Abstraction layer for reducer dispatch methods
   const updateData = obj => {
     dispatchAppData(obj);
-  }
+  };
   const updateOptions = obj => {
     dispatchCalendarOptions(obj);
   };
@@ -59,16 +59,16 @@ function App() {
   useEffect(() => {
     fetchUsers().then(({ users }) => {
       updateData({ users });
-      updateOptions({ selectedUsers: users || [] });
+      updateOptions({ selectedUsers: users || []});
     });
   }, []);
 
   // Fetch new schedule data on load and when calendar options change
   useEffect(() => {
     if (calendarOptions.range)
-    {
+
       if (calendarOptions.selectedUsers.length > 1)
-      {
+
         fetchSchedule({
           users: calendarOptions.selectedUsers,
           start: calendarOptions.range.start,
@@ -77,17 +77,17 @@ function App() {
             workSchedule: calendarOptions.workSchedule,
             time_zone: queryString.parse(history && history.location.search).time_zone || calendarOptions.currenttime_zone
           }
-        }).then(updateData)
-      }
+        }).then(updateData);
+
       else if (calendarOptions.selectedUsers.length === 1)
-      {
+
         fetchUserEvents({
           user_id: calendarOptions.selectedUsers[0].user_id,
           start: calendarOptions.range.start,
           end: calendarOptions.range.end
-        }).then(updateData)        
-      }
-    }
+        }).then(updateData);
+
+
   }, [calendarOptions, history]);
 
   // Simulate fetching language data on load
@@ -116,12 +116,12 @@ function App() {
           <Router>
             <AppControls />
             <Switch>
-              <Route exact path="/">
-              <div className="App">
-                <CalendarView  />
+              <Route exact path='/'>
+                <div className='App'>
+                  <CalendarView />
                 </div>
               </Route>
-              <Route path="/week/:day">
+              <Route path='/week/:day'>
                 <CalendarView />
               </Route>
             </Switch>

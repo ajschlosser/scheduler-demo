@@ -4,7 +4,7 @@ const path = require('path');
 const db = require(path.join(__dirname, './db'));
 const {
   dayjs,
-  catchHandler 
+  catchHandler
 } = require('./util');
 const { generateFakeUsers } = require('./api/models/user.model');
 const { generateFakeEvents } = require('./api/models/event.model');
@@ -16,7 +16,7 @@ const { generateFakeEvents } = require('./api/models/event.model');
 const init = async function () {
   console.log(process.env.SCHEDULER_DEMO_ENVIRONMENT);
   if (process.env.SCHEDULER_DEMO_ENVIRONMENT !== undefined)
-    return
+    return;
 
   try
   {
@@ -52,7 +52,7 @@ const init = async function () {
         fakeEvents.forEach(async e => {
           try
           {
-            await db.query(`INSERT INTO event (event_id, title, description, md5, start, end, allDay, users) VALUES ('${e.event_id}', '${e.title}', '${e.description}', '${e.md5}', '${dayjs.utc(e.start).format('YYYY-MM-DD HH:mm:ss')}', '${e.end.format('YYYY-MM-DD HH:mm:ss')}', ${e.allDay ? 1: 0}, '${!e.users ? u.user_id : e.users.join(',')}')`);
+            await db.query(`INSERT INTO event (event_id, title, description, md5, start, end, allDay, users) VALUES ('${e.event_id}', '${e.title}', '${e.description}', '${e.md5}', '${dayjs.utc(e.start).format('YYYY-MM-DD HH:mm:ss')}', '${e.end.format('YYYY-MM-DD HH:mm:ss')}', ${e.allDay ? 1 : 0}, '${!e.users ? u.user_id : e.users.join(',')}')`);
             await db.query(`INSERT INTO event_user (event_id, user_id, start, end, md5_range) VALUES ('${e.event_id}', '${u.user_id}', '${e.start.format('YYYY-MM-DD HH:mm:ss')}', '${e.start.format('YYYY-MM-DD HH:mm:ss')}', '${e.md5}')`);
           }
           catch (e)

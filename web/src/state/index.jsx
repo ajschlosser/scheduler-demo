@@ -1,4 +1,4 @@
-import React from 'react';;
+import React from 'react';
 
 // Calendar settings, filters, etc.
 const CalendarContext = React.createContext();
@@ -24,7 +24,7 @@ const calendarContextInitialState = {
     'Asia/Seoul',
     'Asia/Tokyo'
   ]
-}
+};
 
 // User data, event data, etc.
 const DataContext = React.createContext();
@@ -45,14 +45,12 @@ const languageContextInitialState = {
   monthLabel: 'Month',
   weekLabel: 'Week',
   selectTimeZoneLabel: 'Select IANA Time Zone'
-}
+};
 
 // Dumb reducer for everything just merges updated and new values into existing state
 //const genericReducer = (a, b) => ({ ...a, ...b })
 
-const genericReducer = (a, b) => {
-  return { ...a, ...b };
-}
+const genericReducer = (a, b) => ({ ...a, ...b });
 
 export {
   CalendarContext,
@@ -62,4 +60,4 @@ export {
   dataContextInitialState,
   languageContextInitialState,
   genericReducer
-}
+};

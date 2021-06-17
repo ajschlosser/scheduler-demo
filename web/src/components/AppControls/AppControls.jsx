@@ -30,10 +30,10 @@ const AppControls = ({ classes }) => {
   const messages = useContext(LanguageContext);
 
   return (
-    <AppBar position="sticky" >
+    <AppBar position='sticky' >
       <Toolbar>
         <CalendarTodayRoundedIcon className={classes.icon} />
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant='h6' className={classes.title}>
           {messages.title}
         </Typography>
       </Toolbar>

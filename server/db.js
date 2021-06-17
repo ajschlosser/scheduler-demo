@@ -15,15 +15,15 @@ const query = util.promisify(connection.query).bind(connection);
 
 module.exports = {
   query: async q => {
-      // Uncomment to log every MySQL query
-      // console.log(`MySQL: "${q}"`);
-      try
-      {
-        return await query(q);
-      }
-      catch (err)
-      {
-        catchHandler(err);
-      }
+    // Uncomment to log every MySQL query
+    // console.log(`MySQL: "${q}"`);
+    try
+    {
+      return await query(q);
+    }
+    catch (err)
+    {
+      catchHandler(err);
+    }
   }
 };

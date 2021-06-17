@@ -29,12 +29,12 @@ eventRouter.post('/', async (req, res, next) => {
   {
     const r = await createEvent(newEvent);
     if (req.body.users)
-    {
+
       await req.body.users.forEach(
         async user_id =>
           await linkEventToUser(newEvent.event_id, user_id)
       );
-    }
+
     res.status(201).json({ ...newEvent, id: r.insertId });
   }
   catch (err)
@@ -47,9 +47,9 @@ eventRouter.post('/', async (req, res, next) => {
 eventRouter.get('/', async (req, res, next) => {
   const { start, end } = req.query;
   if (!start || !end)
-  {
+
     res.sendStatus(400);
-  }
+
   try {
     const r = await getEventsInRange(start, end);
     res.json(getResponseHandler(r));
@@ -77,10 +77,10 @@ eventRouter.put('/:id', async (req, res, next) => {
   try {
     await updateEventById(req.params.id, req.body);
     if (req.body.users)
-    {
+
       await updateEventUsers(req.params.id, req.body.users);
-    }
-    res.sendStatus(204);    
+
+    res.sendStatus(204);
   }
   catch (err)
   {

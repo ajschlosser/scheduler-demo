@@ -60,24 +60,24 @@ const CalendarView = ({ classes, theme }) => {
 
   let { day } = useParams();
   let history = useHistory();
-  
+
   let { view, time_zone } = queryString.parse(history.location.search);
 
   const handleEventClick = data => {
     const newView = calendarOptions.currentView === 'timeGridWeek' ? 'dayGridMonth' : 'timeGridWeek';
     let loc = `/week/${data.event.extendedProps.startDate}`;
     if (view || newView || time_zone)
-    {
-      loc += `?`
-    }
+
+      loc += '?';
+
     if (view || newView)
-    {
+
       loc += `view=${newView || view}`;
-    }
+
     if (time_zone)
-    {
+
       loc += `&time_zone=${time_zone}`;
-    }
+
     history.push(loc);
   };
 
@@ -101,12 +101,12 @@ const CalendarView = ({ classes, theme }) => {
         if (event.extendedProps.freeTime)
         {
           event.setProp('backgroundColor', theme.palette.success.main);
-          event.setProp('borderColor', '#000')
+          event.setProp('borderColor', '#000');
         }
         else
         {
           event.setProp('backgroundColor', theme.palette.error.main);
-          event.setProp('borderColor', '#000')
+          event.setProp('borderColor', '#000');
         }
       },
       datesSet: ({ start, end }) => {
@@ -118,34 +118,36 @@ const CalendarView = ({ classes, theme }) => {
         });
       },
       eventsSet: e => {
-        e = e.map(e => ({ ...e, start: e.allDay ? new Date(e.extendedProps.startDate).toISOString() : e.start }))
+        e = e.map(e => ({ ...e, start: e.allDay ? new Date(e.extendedProps.startDate).toISOString() : e.start }));
         return e;
       }
     };
     return (
       <div className={classes.calendar}>
         <Toolbar>
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs aria-label='breadcrumb'>
             {history.location.pathname !== '/'
-            ? (
-              
-              <Link color="inherit" to="/" onClick={()=>history.push(`/`)} className={classes.link}>
-                <MenuIcon className={classes.icon} />
-                {messages.monthLabel}
-              </Link>
-            )
-            : (
-              <Typography className={classes.link} color="textPrimary"><MenuIcon className={classes.icon} />
-                {messages.monthLabel}
-              </Typography>
-            )}
-            {history.location.pathname !== '/' ? (
-              <Typography className={classes.link} color="textPrimary">
-                <MenuIcon className={classes.icon} />{messages.weekLabel}
-              </Typography>
-            ): null}
+              ? (
+
+                <Link color='inherit' to='/' onClick={() => history.push('/')} className={classes.link}>
+                  <MenuIcon className={classes.icon} />
+                  {messages.monthLabel}
+                </Link>
+              )
+              : (
+                <Typography className={classes.link} color='textPrimary'><MenuIcon className={classes.icon} />
+                  {messages.monthLabel}
+                </Typography>
+              )}
+            {history.location.pathname !== '/'
+              ? (
+                <Typography className={classes.link} color='textPrimary'>
+                  <MenuIcon className={classes.icon} />{messages.weekLabel}
+                </Typography>
+              )
+              : null}
           </Breadcrumbs>
-          {appData.loading && <CircularProgress style={{ margin: '0 auto' }} color="secondary" />}
+          {appData.loading && <CircularProgress style={{ margin: '0 auto' }} color='secondary' />}
         </Toolbar>
         <Toolbar>
           <div className={classes.calendarDisplay}>
@@ -161,6 +163,6 @@ const CalendarView = ({ classes, theme }) => {
       {calendarViewContextConsumer}
     </CalendarContext.Consumer>
   );
-}
+};
 
 export default withStyles(styles, { withTheme: true })(withRouter(CalendarView));

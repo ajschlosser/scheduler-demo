@@ -7,7 +7,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel'
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 import Select from '@material-ui/core/Select';
@@ -36,17 +36,17 @@ const ScheduleOptions = ({ workingHoursLabel, selectTimeZoneLabel, classes }) =>
     updateOptions({ currenttime_zone: e.target.value });
     let loc = `${history.location.pathname}`;
     if (view || e.target.value)
-    {
-      loc += `?`
-    }
+
+      loc += '?';
+
     if (view)
-    {
+
       loc += `view=${view}`;
-    }
+
     if (e.target.value)
-    {
+
       loc += `&time_zone=${e.target.value}`;
-    }
+
     history.push(loc);
   };
   return (
@@ -64,14 +64,14 @@ const ScheduleOptions = ({ workingHoursLabel, selectTimeZoneLabel, classes }) =>
           />
         </FormControl>
       </FormGroup>
-      <Divider orientation="vertical" flexItem className={classes.divider} />
+      <Divider orientation='vertical' flexItem className={classes.divider} />
       <FormGroup>
         <FormControl>
-          <InputLabel id="select-timezone-label">Your Timezone:</InputLabel>
+          <InputLabel id='select-timezone-label'>Your Timezone:</InputLabel>
           <Select
-            id="select-timezone"
-            labelId="select-timezone-label"
-            value={queryString.parse(history && history.location.search).time_zone || calendarOptions.currenttime_zone || `America/Los_Angeles`}
+            id='select-timezone'
+            labelId='select-timezone-label'
+            value={queryString.parse(history && history.location.search).time_zone || calendarOptions.currenttime_zone || 'America/Los_Angeles'}
             onChange={ontime_zoneChangeHandler}
             label={selectTimeZoneLabel}
           >
@@ -85,6 +85,6 @@ const ScheduleOptions = ({ workingHoursLabel, selectTimeZoneLabel, classes }) =>
       </FormGroup>
     </Toolbar>
   );
-}
+};
 
 export default withStyles(styles, { withThem: true })(ScheduleOptions);

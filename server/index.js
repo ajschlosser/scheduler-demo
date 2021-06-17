@@ -19,15 +19,15 @@ const eventRoutes = require('./api/routes/event.routes');
 // Express app
 const app = express();
 app.use(express.static('../web/build'));
-app.use(/\/((?!api).)*/, function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../web/build/')});
+app.use(/\/((?!api).)*/, function (req, res) {
+  res.sendFile('index.html', { root: path.join(__dirname, '../web/build/') });
 });
 app.use(
   OpenApiValidator.middleware({
     apiSpec: './api.spec.yml',
     validateRequests: true,
     validateResponses: false,
-  }),
+  })
 );
 app.use(compression());
 app.use(cors());
@@ -43,7 +43,7 @@ const run = async () => {
   {
     await init();
     await app.listen(port);
-    console.log('express server listening on port', port,);
+    console.log('express server listening on port', port);
   }
   catch (err)
   {

@@ -4,7 +4,7 @@ const {
 } = require('../../util.js');
 
 class User {
-  constructor(options={
+  constructor(options = {
     time_zone: 'America/Los_Angeles',
     // The following values are in UTC
     workDayStart: 16,  // 9 AM
@@ -14,30 +14,30 @@ class User {
     active: 1,
     events: []
   }) {
-    Object.keys(options).forEach(k => this[k] = options[k] !== undefined ? options[k] : undefined );
+    Object.keys(options).forEach(k => this[k] = options[k] !== undefined ? options[k] : undefined);
     this.user_id = uuid4();
     if (!this.name)
     {
       let names = [
-        'Grumbo','Bumpkin','Bopp','Gilbert','Sandy',
-        'Popple','Jolly','Wilco','Bobbles','Aurora',
-        'Potato','Nutmeg','Pastry','Holly','Lupp'
+        'Grumbo', 'Bumpkin', 'Bopp', 'Gilbert', 'Sandy',
+        'Popple', 'Jolly', 'Wilco', 'Bobbles', 'Aurora',
+        'Potato', 'Nutmeg', 'Pastry', 'Holly', 'Lupp'
       ];
       this.name = `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
     }
   }
 }
 
-const generateFakeUsers = ({ count=0, overrides=[], devId=true }) => {
+const generateFakeUsers = ({ count = 0, overrides = [], devId = true }) => {
   let dummyUsers = [];
   while (dummyUsers.length < count) {
     let user = new User();
     // In dev, for convenience, use simple integers rather than uuids
     // for user_id (makes debugging simpler)
     if (devId)
-    {
+
       user.user_id = dummyUsers.length + 1;
-    }
+
     if (overrides.length)
     {
       let override = overrides.shift();

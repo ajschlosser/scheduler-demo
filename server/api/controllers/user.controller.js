@@ -7,16 +7,16 @@ const mapUsers = user => {
     ...user,
     events,
     working_hours: `${user.workDayStart}:00-${user.workDayEnd}:00`
-  }
-}
+  };
+};
 
 const getUsers = async idStrOrArr => {
   if (idStrOrArr && typeof idStrOrArr === 'string')
-  {
+
     idStrOrArr = `'${idStrOrArr.split(',').join('\',\'')}'`;
-  }
+
   let whereClause = !idStrOrArr ? '' : 'WHERE u.user_id IN (' + idStrOrArr + ')';
-  let q = `SELECT u.user_id, ANY_VALUE(u.name) AS name, ANY_VALUE(u.workDayStart) AS workDayStart, ANY_VALUE(u.workDayEnd) AS workDayEnd, ANY_VALUE(u.workWeekStart) AS workWeekStart, ANY_VALUE(u.workWeekEnd) AS workWeekEnd, ANY_VALUE(u.time_zone) AS time_zone, ANY_VALUE(u.active) AS active, GROUP_CONCAT(eu.event_id SEPARATOR ',') AS events FROM user u LEFT JOIN event_user eu ON eu.user_id = u.user_id ${whereClause} GROUP BY u.user_id`
+  let q = `SELECT u.user_id, ANY_VALUE(u.name) AS name, ANY_VALUE(u.workDayStart) AS workDayStart, ANY_VALUE(u.workDayEnd) AS workDayEnd, ANY_VALUE(u.workWeekStart) AS workWeekStart, ANY_VALUE(u.workWeekEnd) AS workWeekEnd, ANY_VALUE(u.time_zone) AS time_zone, ANY_VALUE(u.active) AS active, GROUP_CONCAT(eu.event_id SEPARATOR ',') AS events FROM user u LEFT JOIN event_user eu ON eu.user_id = u.user_id ${whereClause} GROUP BY u.user_id`;
   try
   {
     let rows = await db.query(q);
@@ -32,7 +32,7 @@ const createUser = async userObj => {
   let q = `INSERT INTO user (user_id, name, workDayStart, workDayEnd, workWeekStart, workWeekEnd, time_zone, active) VALUES ('${userObj.user_id}','${userObj.name}','${userObj.workDayStart}','${userObj.workDayEnd}','${userObj.workWeekStart}','${userObj.workWeekEnd}','${userObj.time_zone}','${userObj.active}')`;
   try
   {
-    return await db.query(q)
+    return await db.query(q);
   }
   catch (err)
   {
@@ -41,18 +41,18 @@ const createUser = async userObj => {
 };
 
 const updateUserById = async (user_id, data) => {
-  let q = `UPDATE user `;
+  let q = 'UPDATE user ';
   Object.keys(data).forEach((k, i, kArr) => {
     if (i === 0)
-      q += `SET `;
+      q += 'SET ';
     q += `${k} = '${data[k]}'`;
-    if (i !== kArr.length-1)
-      q += `, `;
+    if (i !== kArr.length - 1)
+      q += ', ';
   });
-  q += ` WHERE user_id = '${user_id}'`
+  q += ` WHERE user_id = '${user_id}'`;
   try
   {
-    const userResult = await db.query(q)
+    const userResult = await db.query(q);
     if (userResult.affectedRows === 0)
       throw 404;
     else
@@ -78,7 +78,7 @@ const deleteUserById = async user_id => {
   {
     catchHandler(err);
   }
-}
+};
 
 const getUserById = async id => getUsers(id);
 

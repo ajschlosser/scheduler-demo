@@ -19,7 +19,7 @@ const styles = theme => ({
   },
 });
 
-const UserSelect = ({ classes, userSelectLabel, userSelectPlaceholder  }) => {
+const UserSelect = ({ classes, userSelectLabel, userSelectPlaceholder }) => {
   const { calendarOptions, updateOptions } = useContext(CalendarContext);
   const { appData } = useContext(DataContext);
   return (
@@ -27,7 +27,7 @@ const UserSelect = ({ classes, userSelectLabel, userSelectPlaceholder  }) => {
       <FormGroup>
         <Autocomplete
           multiple
-          id="tags-outlined"
+          id='tags-outlined'
           options={appData.users || []}
           getOptionLabel={o => `${o.name} (${o.user_id}) (${o.time_zone.split('/')[1].replace('_', ' ')})`}
           value={calendarOptions.selectedUsers || []}
@@ -36,15 +36,15 @@ const UserSelect = ({ classes, userSelectLabel, userSelectPlaceholder  }) => {
           ChipProps={{
             color: 'primary'
           }}
-          renderInput={(params) => (
+          renderInput={params => (
             <TextField
               {...params}
-              variant="outlined"
+              variant='outlined'
               label={userSelectLabel}
               placeholder={userSelectPlaceholder}
             />
           )}
-          onChange={(e, u) => updateOptions({selectedUsers: u })}
+          onChange={(e, u) => updateOptions({ selectedUsers: u })}
         />
       </FormGroup>
     </div>
